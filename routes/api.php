@@ -1,18 +1,32 @@
 <?php
 
+use App\Http\Middleware\AuthJWT;
+use App\Http\Middleware\VerifyContentType;
 use Illuminate\Http\Request;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::namespace('Api')
+    ->prefix('v1')
+    ->group(function () {
+        Route::group(['middleware' => VerifyContentType::class], function () {
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+            Route::resource(
+                'sessions',
+                'SessionController',
+                ['only' => ['store', 'show']]
+            );
+
+            Route::group(['middleware' => AuthJWT::class], function () {
+
+                Route::resource(
+                    'orders',
+                    'OrderController'
+                );
+
+                Route::resource(
+                    'notes',
+                    'NoteController'
+                );
+
+            });
+        });
+    });
