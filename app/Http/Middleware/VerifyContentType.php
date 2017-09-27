@@ -17,6 +17,16 @@ class VerifyContentType
      */
     public function handle($request, Closure $next)
     {
+
+
+
+
+        return $next($request);
+
+
+
+
+
         // Servers MUST respond with a 415 Unsupported Media Type status code if a request specifies
         // the header Content-Type: application/vnd.api+json with any media type parameters.
 

@@ -21,7 +21,8 @@ class OrderResource extends Resource
             "links" => [
                 "self" => route('orders.show', $this)
             ],
-            "relations" => new SessionRelationshipResource($this->resource),
+            "relations" => new OrderRelationshipResource($this->resource),
             "meta" => [],
-        ];    }
+        ];
+    }
 }

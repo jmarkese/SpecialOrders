@@ -11,23 +11,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class User extends Authenticatable
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'first_name', 'last_name', 'orderManager', 'accessLevel', 'fk_location_id'
+        'name', 'email', 'password', 'first_name', 'last_name', 'orderManager', 'accessLevel', 'location_id'
     ];
-
-    /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'user_id';
 
     /**
      * The attributes that should be hidden for arrays.
@@ -43,6 +34,6 @@ class User extends Authenticatable
      */
     public function location()
     {
-        return $this->belongsTo(Location::class, 'fk_location', 'location_id');
+        return $this->belongsTo(Location::class);
     }
 }
