@@ -15,7 +15,13 @@ class OrderRelationshipResource extends Resource
     public function toArray($request)
     {
         return [
-
+            'location' => [
+                'links' => [
+                    'self' => route('orders.relationships.location', ['orders' => $this->id]),
+                    'related' => route('orders.location', ['orders' => $this->id]),
+                ],
+                'data' => new LocationResource($this->location),
+            ],
         ];
     }
 }

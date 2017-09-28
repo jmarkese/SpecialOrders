@@ -14,6 +14,21 @@ class NoteResource extends Resource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $attributes = [
+            'status' => $this->resource->status->name,
+            'vendor' => $this->resource->vendor->name,
+            'category' => $this->resource->category->name,
+        ];
+
+        return [
+            "type" => "orders",
+            "id" => (string)$this->id,
+            "attributes" => $attributes + $this->resource->toArray(),
+            "links" => [
+                "self" => route('orders.show', $this)
+            ],
+            "relations" => new OrderRelationshipResource($this->resource),
+            "meta" => [],
+        ];
     }
 }

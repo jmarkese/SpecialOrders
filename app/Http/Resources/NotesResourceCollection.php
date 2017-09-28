@@ -14,6 +14,8 @@ class NotesResourceCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'data' => NoteResource::collection($this->collection),
+        ];
     }
 }

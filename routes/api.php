@@ -9,10 +9,25 @@ Route::namespace('Api')
     ->group(function () {
         Route::group(['middleware' => VerifyContentType::class], function () {
 
+            // STUB routes
+            Route::get('orders/{order}/relationships/location', ['as' => 'orders.relationships.location']);
+            Route::get('orders/{order}/location', ['as' => 'orders.location']);
+            // END STUB routes
+
             Route::resource(
                 'sessions',
                 'SessionController',
                 ['only' => ['store', 'show']]
+            );
+
+            Route::resource(
+                'users',
+                'UserController'
+            );
+
+            Route::resource(
+                'locations',
+                'LocationController'
             );
 
             Route::group(['middleware' => AuthJWT::class], function () {
