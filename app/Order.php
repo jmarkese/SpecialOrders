@@ -10,6 +10,8 @@ class Order extends Model
 
     protected $visible = [
         'created_at',
+        'user_id',
+        'location_id',
         'part_num',
         'description',
         'qty',

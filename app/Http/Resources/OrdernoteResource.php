@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class NoteResource extends Resource
+class OrdernoteResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -15,20 +15,16 @@ class NoteResource extends Resource
     public function toArray($request)
     {
         $attributes = [
-            'status' => $this->resource->status->name,
-            'vendor' => $this->resource->vendor->name,
-            'category' => $this->resource->category->name,
+            'user' => $this->resource->user->user_name,
         ];
 
         return [
-            "type" => "orders",
+            "type" => "notes",
             "id" => (string)$this->id,
             "attributes" => $attributes + $this->resource->toArray(),
             "links" => [
-                "self" => route('orders.show', $this)
+                "self" => route('notes.show', $this)
             ],
-            "relations" => new OrderRelationshipResource($this->resource),
-            "meta" => [],
         ];
     }
 }
