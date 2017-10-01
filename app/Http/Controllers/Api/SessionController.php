@@ -7,11 +7,13 @@ use App\Http\Resources\SessionResource;
 use App\Traits\JsonApiReponse;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Dingo\Api\Routing\Helpers;
 
 class SessionController extends Controller
 {
 
     use JsonApiReponse;
+    use Helpers;
 
     /**
      * Store a newly created resource in storage.

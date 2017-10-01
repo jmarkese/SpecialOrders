@@ -7,10 +7,12 @@ use App\Http\Resources\OrdersResourceCollection;
 use App\Order;
 use Illuminate\Http\Request;
 use App\Traits\JsonApiReponse;
+use Dingo\Api\Routing\Helpers;
 
 class OrderController extends Controller
 {
     use JsonApiReponse;
+    use Helpers;
 
     /**
      * Display a listing of the resource.

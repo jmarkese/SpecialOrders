@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Order;
 use App\Ordernote;
 use Illuminate\Http\Request;
+use Dingo\Api\Routing\Helpers;
 
 class NoteController extends Controller
 {
     use JsonApiReponse;
+    use Helpers;
 
     /**
      * Display a listing of the resource.s
