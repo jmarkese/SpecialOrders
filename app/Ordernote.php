@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ordernote extends Model
 {
-    protected $with = ['user'];
+    protected $visible = [
+        'created_at',
+        'user_id',
+        'order_id',
+        'content',
+    ];
 
     public function order()
     {

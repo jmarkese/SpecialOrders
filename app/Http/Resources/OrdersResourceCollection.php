@@ -14,6 +14,28 @@ class OrdersResourceCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'data' => OrderResource::collection($this->collection),
+        ];
     }
+
+    /**
+     * Get any additional data that should be returned with the resource array.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
+    public function with($request)
+    {
+        $included = $this->collection->map(
+            function ($order) {
+                return new UserResource($order->user);
+            }
+        );
+
+        return [
+            'included' => $included,
+        ];
+    }
+
 }

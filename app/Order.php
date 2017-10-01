@@ -8,6 +8,20 @@ class Order extends Model
 {
     protected $with = ['category', 'location', 'status', 'vendor', 'user', 'notes'];
 
+    protected $visible = [
+        'created_at',
+        'user_id',
+        'location_id',
+        'part_num',
+        'description',
+        'qty',
+        'customer_name',
+        'customer_contact',
+        'customer_deposit',
+        'emlpoyee_name',
+        'sales_invoice_num',
+    ];
+
     public function category()
     {
         return $this->belongsTo(Ordercategory::class, 'ordercategory_id');

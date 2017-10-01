@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Resources\OrdersResourceCollection;
 use App\Order;
 use Illuminate\Http\Request;
+use App\Traits\JsonApiReponse;
 
 class OrderController extends Controller
 {
+    use JsonApiReponse;
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $resource = new OrdersResourceCollection(Order::query()->paginate());
+        return $this->jsonApi($resource);
     }
 
     /**
