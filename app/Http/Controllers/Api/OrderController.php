@@ -12,7 +12,7 @@ use Dingo\Api\Routing\Helpers;
 class OrderController extends Controller
 {
     use JsonApiReponse;
-    use Helpers;
+    //use Helpers;
 
     /**
      * Display a listing of the resource.

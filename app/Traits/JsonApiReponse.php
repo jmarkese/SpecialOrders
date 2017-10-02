@@ -11,13 +11,17 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 trait JsonApiReponse
 {
 
-    public function jsonApi($resource, $token = null)
+    public function jsonApi(Resource $resource, $token = null)
     {
         $token = $token ?: JWTAuth::getToken();
-        return $resource
-            ->response()
-            ->header('Authorization', 'Bearer ' . $token)
-            ->header('Content-Type', 'application/vnd.api+json');
+        $resource = $resource->response();
+        $resource->header('Content-Type', 'application/vnd.api+json');
+
+        if($token){
+            $resource->header('Authorization', 'Bearer ' . $token);
+        }
+
+        return $resource;
     }
 
 }
