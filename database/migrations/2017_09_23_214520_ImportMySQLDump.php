@@ -13,7 +13,7 @@ class ImportMySQLDump extends Migration
      */
     public function up()
     {
-        DB::unprepared(file_get_contents('/var/www/SpecialOrders/AltgarInternal20120726_2.sql'));
+        DB::unprepared(file_get_contents('/var/www/SpecialOrders/specialorders_2017-10-02.sql'));
     }
 
     /**

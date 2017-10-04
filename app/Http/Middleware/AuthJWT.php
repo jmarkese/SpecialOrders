@@ -21,16 +21,6 @@ class AuthJWT
      */
     public function handle($request, Closure $next)
     {
-
-
-
-
-        return $next($request);
-
-
-
-
-
         try {
             if (!$user = JWTAuth::parseToken()->authenticate()) {
                 $status = 403;

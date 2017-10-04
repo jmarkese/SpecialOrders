@@ -39,12 +39,14 @@ Route::namespace('Api')
 
                 Route::resource(
                     'orders',
-                    'OrderController'
+                    'OrderController',
+                    ['only' => ['index', 'store', 'show', 'update']]
                 );
 
                 Route::resource(
                     'notes',
-                    'NoteController'
+                    'NoteController',
+                    ['only' => ['store']]
                 );
 
             });

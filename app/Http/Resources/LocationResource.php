@@ -16,12 +16,11 @@ class LocationResource extends Resource
     {
         return [
             "type" => "locations",
-            "id" => (string)$this->resource->id,
+            "id" => $this->resource->id,
             "attributes" => $this->resource->toArray(),
             "links" => [
                 "self" => route('locations.show', $this->resource)
             ],
-
         ];
     }
 }

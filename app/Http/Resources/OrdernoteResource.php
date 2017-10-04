@@ -14,17 +14,24 @@ class OrdernoteResource extends Resource
      */
     public function toArray($request)
     {
+
+        $this->resource->setVisible([
+            'created_at',
+            'content',
+        ]);
+
         $attributes = [
-            'user' => $this->resource->user->user_name,
+            'user' => new UserResource($this->resource->user),
         ];
 
         return [
             "type" => "notes",
-            "id" => (string)$this->id,
+            "id" => $this->id,
             "attributes" => $attributes + $this->resource->toArray(),
             "links" => [
                 "self" => route('notes.show', $this)
             ],
         ];
     }
+
 }
