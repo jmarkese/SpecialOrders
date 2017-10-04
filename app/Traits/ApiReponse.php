@@ -8,16 +8,16 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
-trait JsonApiReponse
+trait ApiReponse
 {
 
-    public function jsonApi($resource, $token = null)
+    public function apiReponse(Resource $resource, $token = null)
     {
         $token = $token ?: JWTAuth::getToken();
         return $resource
+            //->additional(['status' => 'success'])
             ->response()
-            ->header('Authorization', 'Bearer ' . $token)
-            ->header('Content-Type', 'application/vnd.api+json');
+            ->header('Authorization', 'Bearer ' . $token);
     }
 
 }

@@ -8,12 +8,12 @@ use App\Http\Resources\OrderResource;
 use App\Order;
 use App\Orderstatus;
 use Illuminate\Http\Request;
-use App\Traits\JsonApiReponse;
+use App\Traits\ApiReponse;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class OrderController extends Controller
 {
-    use JsonApiReponse;
+    use ApiReponse;
 
     /**
      * Display a listing of the resource.

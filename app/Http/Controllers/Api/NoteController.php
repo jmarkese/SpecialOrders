@@ -5,13 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Order;
 use App\Ordernote;
+use App\Traits\ApiReponse;
 use Illuminate\Http\Request;
-use Dingo\Api\Routing\Helpers;
 
 class NoteController extends Controller
 {
-    use JsonApiReponse;
-    use Helpers;
+    use ApiReponse;
 
     /**
      * Display a listing of the resource.s
@@ -21,7 +20,7 @@ class NoteController extends Controller
     public function index()
     {
         $resource = new NotesResourceCollection(Ordernote::query(['user', 'order'])->paginate());
-        return $this->jsonApi($resource);
+        return $this->apiReponse($resource);
     }
 
     /**
