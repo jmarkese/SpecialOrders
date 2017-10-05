@@ -10,25 +10,13 @@ use App\Orderstatus;
 use Illuminate\Http\Request;
 use App\Traits\ApiReponse;
 use Illuminate\Support\Facades\Gate;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
-class OrdersController extends Controller
+class OrdersController extends ApiController
 {
-    use ApiReponse;
 
-    /**
-     * @var authenticated user
-     */
-    private $user;
-
-    /**
-     * Set the authenticatec user
-     *
-     * OrdersController constructor.
-     */
     public function __construct()
     {
-        $this->user = JWTAuth::parseToken()->authenticate();
+        parent::__construct();
     }
 
     /**

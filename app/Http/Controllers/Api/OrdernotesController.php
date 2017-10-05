@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Resources\OrdernoteResource;
 use App\Http\Resources\OrdernoteResourceCollection;
-use App\Order;
 use App\Ordernote;
-use App\Traits\ApiReponse;
 use Illuminate\Http\Request;
 
-class OrdernotesController extends Controller
+class OrdernotesController extends ApiController
 {
-    use ApiReponse;
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -32,7 +34,9 @@ class OrdernotesController extends Controller
      */
     public function show(Ordernote $ordernote)
     {
-        //
+        $this->authorizeForUser($this->user, 'order_location', $ordernote->order);
+        $resource = new OrdernoteResource($ordernote);
+        return $this->apiReponse($resource);
     }
 
     /**

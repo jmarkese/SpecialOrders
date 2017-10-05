@@ -138,6 +138,7 @@ return [
     */
 
     'errorFormat' => [
+        'status' => 'error',
         'message' => ':message',
         'errors' => ':errors',
         'code' => ':code',
@@ -155,7 +156,7 @@ return [
     */
 
     'middleware' => [
-
+        //'bindings'
     ],
 
     /*
@@ -169,7 +170,7 @@ return [
     */
 
     'auth' => [
-
+        'jwt' => 'Dingo\Api\Auth\Provider\JWT',
     ],
 
     /*

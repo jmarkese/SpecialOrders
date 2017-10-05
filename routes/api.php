@@ -3,16 +3,19 @@
 use App\Http\Middleware\AuthJWT;
 use App\Http\Middleware\VerifyContentType;
 use Illuminate\Http\Request;
-use Dingo\Api\Routing\Router as Dingo;
 use App\Http\Controllers\Api\SessionsController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\LocationsController;
 use App\Http\Controllers\Api\OrdersController;
 use App\Http\Controllers\Api\OrdernotesController;
 
-$api = app(Dingo::class);
+$api = app('Dingo\Api\Routing\Router');
 
-$api->version('v1', function ($api) {
+$api->version('v1', ['middleware' => 'bindings'], function ($api) {
+    //dd("HERE routes");
+    $api->get('test', function(){
+        dd("HERE endpoint");
+    });
 
     // STUB routes
     $api->get('orders/{order}/relationships/location', ['as' => 'orders.relationships.location']);
@@ -41,15 +44,12 @@ $api->version('v1', function ($api) {
 
     $api->group(['middleware' => AuthJWT::class], function ($api) {
 
-        $api->resource(
-            'orders',
-            OrdersController::class,
-            ['only' => ['index', 'store', 'show', 'update']]
+        $api->patch('orders/{order}/deliver/', ['as' => 'orders.deliver', 'uses' => 'OrdersController@deliver']);
+        $api->resource('orders', OrdersController::class,
+            ['only' => ['index', 'show', 'store', 'update']]
         );
 
-        $api->resource(
-            'notes',
-            OrdernotesController::class,
+        $api->resource('notes', OrdernotesController::class,
             ['only' => ['store', 'show', 'update']]
         );
 

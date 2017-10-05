@@ -33,8 +33,9 @@ class SessionsController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Resources\Json\Resource
      */
-    public function show(User $id)
+    public function show(User $id=null)
     {
+        dd("HERE");
         // @TODO
     }
 }
