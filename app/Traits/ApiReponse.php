@@ -10,7 +10,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 trait ApiReponse
 {
-
     public function apiReponse(Resource $resource, $token = null)
     {
         $token = $token ?: JWTAuth::getToken();
