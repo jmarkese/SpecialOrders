@@ -16,8 +16,16 @@ class OrdersController extends Controller
 {
     use ApiReponse;
 
+    /**
+     * @var authenticated user
+     */
     private $user;
 
+    /**
+     * Set the authenticatec user
+     *
+     * OrdersController constructor.
+     */
     public function __construct()
     {
         $this->user = JWTAuth::parseToken()->authenticate();
@@ -125,6 +133,12 @@ class OrdersController extends Controller
         return $this->apiReponse($resource);
     }
 
+    /**
+     * Set order to Picked up.
+     *
+     * @param Order $order
+     * @return mixed
+     */
     public function deliver(Order $order)
     {
         $this->authorizeForUser($this->user, 'order_location', $order);
