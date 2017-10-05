@@ -14,9 +14,10 @@ class UserResource extends Resource
      */
     public function toArray($request)
     {
+
         return [
             "type" => "users",
-            "id" => (string)$this->resource->id,
+            "id" => $this->resource->id,
             "attributes" => $this->resource->toArray(),
             "links" => [
                 "self" => route('users.show', $this->resource)

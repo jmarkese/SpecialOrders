@@ -14,14 +14,17 @@ class LocationResource extends Resource
      */
     public function toArray($request)
     {
+        $this->resource->setVisible([
+            'name',
+        ]);
+
         return [
             "type" => "locations",
-            "id" => (string)$this->resource->id,
+            "id" => $this->resource->id,
             "attributes" => $this->resource->toArray(),
             "links" => [
                 "self" => route('locations.show', $this->resource)
             ],
-
         ];
     }
 }

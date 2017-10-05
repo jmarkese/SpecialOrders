@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    protected $guarded = ['id', 'created_at', 'updated_at', 'location_id'];
     protected $with = ['category', 'location', 'status', 'vendor', 'user', 'notes'];
 
     protected $visible = [
@@ -19,7 +20,6 @@ class Order extends Model
         'customer_contact',
         'customer_deposit',
         'emlpoyee_name',
-        'sales_invoice_num',
     ];
 
     public function category()
