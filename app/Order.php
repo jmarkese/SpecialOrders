@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $guarded = ['id', 'created_at', 'updated_at', 'location_id'];
     protected $with = ['category', 'location', 'status', 'vendor', 'user', 'notes'];
 
     protected $visible = [

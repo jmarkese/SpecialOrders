@@ -29,7 +29,8 @@ class OrderResource extends Resource
             'status' => $this->resource->status,
             'vendor' => $this->resource->vendor,
             'category' => $this->resource->category,
-            'notes' => new OrdernoteResourceCollection($this->resource->notes)
+            'notes' => new OrdernoteResourceCollection($this->resource->notes),
+            'location' => new LocationResource($this->resource->location),
         ];
 
         return [

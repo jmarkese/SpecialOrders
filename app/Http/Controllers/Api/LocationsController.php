@@ -3,24 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Order;
-use App\Ordernote;
-use App\Traits\ApiReponse;
 use Illuminate\Http\Request;
 
-class NoteController extends Controller
+class LocationsController extends Controller
 {
-    use ApiReponse;
-
     /**
-     * Display a listing of the resource.s
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $resource = new NotesResourceCollection(Ordernote::query(['user', 'order'])->paginate());
-        return $this->apiReponse($resource);
+        //
     }
 
     /**
@@ -47,10 +41,10 @@ class NoteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Ordernote  $notes
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Ordernote $notes)
+    public function show($id)
     {
         //
     }
@@ -58,10 +52,10 @@ class NoteController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Ordernote  $notes
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Ordernote $notes)
+    public function edit($id)
     {
         //
     }
@@ -70,10 +64,10 @@ class NoteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Ordernote  $notes
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Ordernote $notes)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -81,10 +75,10 @@ class NoteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Ordernote  $notes
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Ordernote $notes)
+    public function destroy($id)
     {
         //
     }

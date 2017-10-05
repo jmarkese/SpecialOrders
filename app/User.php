@@ -44,8 +44,10 @@ class User extends Authenticatable
 
     public function hasRole($roles)
     {
-        $roles = is_array($roles) ? $roles: [$roles];
-        return (boolean) collect($roles)->intersect($this->roles)->count();
+        if(is_string($roles)) {
+            return $this->roles->contains('name', $roles);
+        }
+        return (boolean) $roles->intersect($this->roles)->count();
     }
 
     public function assignRole($role)
@@ -53,6 +55,13 @@ class User extends Authenticatable
         return $this->roles()->save(
             Role::where('name', $role)->firstOrFail()
         );
+    }
+
+    public function hasPermission($permissions)
+    {
+        $permissions = is_array($permissions) ? $permissions: [$permissions];
+        $uPermissions = collect(data_get($this, 'roles.*.permissions.*.name'));
+        return (boolean) collect($permissions)->intersect($uPermissions)->count();
     }
 
 }

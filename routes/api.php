@@ -20,34 +20,50 @@ Route::namespace('Api')
             // END STUB routes
 
             Route::resource(
-                'sessions',
-                'SessionController',
-                ['only' => ['store', 'show']]
-            );
-
-            Route::resource(
                 'users',
-                'UserController'
+                'UsersController'
             );
 
             Route::resource(
                 'locations',
-                'LocationController'
+                'LocationsController'
             );
 
             Route::group(['middleware' => AuthJWT::class], function () {
 
+                Route::patch('orders/{order}/deliver/', ['as' => 'orders.deliver', 'uses' => 'OrdersController@deliver']);
+
                 Route::resource(
                     'orders',
-                    'OrderController',
+                    'OrdersController',
                     ['only' => ['index', 'store', 'show', 'update']]
                 );
 
                 Route::resource(
                     'notes',
-                    'NoteController',
-                    ['only' => ['store']]
+                    'OrdernotesController',
+                    ['only' => ['store', 'show', 'update']]
                 );
+
+                /*
+                Route::patch('orders/{order}/deliver/', ['as' => 'orders.deliver', 'uses' => 'OrdersController@deliver']);
+
+                Route::get('orders', 'OrdersController@index')
+                    ->name('orders.index')
+                    ->middleware('can:location_order');
+
+                Route::get('orders/{order}', 'OrdersController@show')
+                    ->name('orders.show')
+                    ->middleware('can:location_order,order')
+                    ->middleware('can:show_orders')
+                ;
+                //Route::get('orders/{order}', ['as' => 'orders.show', 'uses' => 'OrdersController@show']);
+                Route::post('orders', ['as' => 'orders.store', 'uses' => 'OrdersController@store']);
+                Route::patch('orders/{order}', ['as' => 'orders.update', 'uses' => 'OrdersController@update']);
+
+                Route::get('orders/{order}/notes/{ordernote}', ['as' => 'orders.notes.show', 'uses' => 'OrdernotesController@show']);
+                Route::post('orders', ['as' => 'orders.notes.store', 'uses' => 'OrdernotesController@store']);
+                 * */
 
             });
         });

@@ -15,7 +15,7 @@ trait ApiReponse
     {
         $token = $token ?: JWTAuth::getToken();
         return $resource
-            //->additional(['status' => 'success'])
+            ->additional(['status' => 'success'])
             ->response()
             ->header('Authorization', 'Bearer ' . $token);
     }

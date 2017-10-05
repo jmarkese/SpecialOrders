@@ -8,7 +8,7 @@ use App\Traits\ApiReponse;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class SessionController extends Controller
+class SessionsController extends Controller
 {
 
     use ApiReponse;

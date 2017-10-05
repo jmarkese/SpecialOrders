@@ -9,11 +9,19 @@ use App\Order;
 use App\Orderstatus;
 use Illuminate\Http\Request;
 use App\Traits\ApiReponse;
+use Illuminate\Support\Facades\Gate;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class OrderController extends Controller
+class OrdersController extends Controller
 {
     use ApiReponse;
+
+    private $user;
+
+    public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate();
+    }
 
     /**
      * Display a listing of the resource.
@@ -22,16 +30,18 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $user = JWTAuth::parseToken()->authenticate();
+        $user = $this->user;
 
-        if (Gate::forUser($user)->allows('update-post', null)) {
+        if (Gate::forUser($user)->allows('manage_orders', null)) {
             $orders = Order::query();
         } else {
-            $orders = Order::where('user_id', $user->id);
+            $orders = Order::where('location_id', $user->location_id);
         }
 
         $pageLength = request()->length;
-        return new OrderResourceCollection($orders->paginate($pageLength));
+        $resource= new OrderResourceCollection($orders->paginate($pageLength));
+
+        return $this->apiReponse($resource);
     }
 
     /**
@@ -42,6 +52,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('store_orders', $this->user);
+
         $request->validate([
             'ordercategory_id' => 'required',
             'ordervendor_id' => 'required',
@@ -51,43 +63,48 @@ class OrderController extends Controller
             'customer_name' => 'required',
             'customer_contact' => 'required',
             'customer_deposit' => 'required|numeric',
-            'emlpoyee_name' => 'required',
-            'location_id' => 'required',
+            'employee_name' => 'required',
         ]);
 
-        //$user = $user = JWTAuth::parseToken()->authenticate();
         $status = Orderstatus::where('short_name', 'NEW')->first();
-
         $data = $request->all();
-        $data['user_id'] = 1;//$user->id;
+        $data['user_id'] = $this->user->id;
         $data['orderstatus_id'] = $status->id;
         $order = Order::create($data);
 
-        $order->save();
+        $order->location()->associate($this->user->location)->save();
 
-        return new OrderResource($order);
+        $resource = new OrderResource($order);
+
+        return $this->apiReponse($resource);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  integer  $id
+     * @param Order $order
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function show($id)
+    public function show(Order $order)
     {
-        return new OrderResource(Order::find($id));
+        $this->authorizeForUser($this->user, 'order_location', $order);
+        $resource = new OrderResource($order);
+        return $this->apiReponse($resource);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  integer  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param Order $order
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Order $order)
     {
+        $this->authorizeForUser($this->user, 'update_orders');
+
         $request->validate([
             'ordercategory_id' => 'required',
             'orderstatus_id' => 'required',
@@ -102,28 +119,21 @@ class OrderController extends Controller
             'location_id' => 'required',
         ]);
 
-        //$user = $user = JWTAuth::parseToken()->authenticate();
-        $order = Order::find($id);
+        $order->update($request->all());
 
-        $status = Orderstatus::where('short_name', 'NEW')->first();
-
-        $data = $request->all();
-        $data['orderstatus_id'] = $status->id;
-
-
-        $order->save();
-
-        return new OrderResource($order);
+        $resource = new OrderResource($order);
+        return $this->apiReponse($resource);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  integer  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function deliver(Order $order)
     {
-        //
+        $this->authorizeForUser($this->user, 'order_location', $order);
+        $this->authorizeForUser($this->user, 'deliver_orders', $order);
+
+        $status = Orderstatus::where('short_name', 'DELIVERED')->first();
+        $order->status()->associate($status)->save();
+
+        $resource = new OrderResource($order);
+        return $this->apiReponse($resource);
     }
 }
