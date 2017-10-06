@@ -156,7 +156,7 @@ return [
     */
 
     'middleware' => [
-        //'bindings'
+
     ],
 
     /*

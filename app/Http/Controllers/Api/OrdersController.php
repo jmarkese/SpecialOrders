@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResourceCollection;
 use App\Http\Resources\OrderResource;
 use App\Order;
 use App\Orderstatus;
 use Illuminate\Http\Request;
-use App\Traits\ApiReponse;
 use Illuminate\Support\Facades\Gate;
 
 class OrdersController extends ApiController
