@@ -1,57 +1,51 @@
 <?php
 
-use App\Http\Middleware\AuthJWT;
-use App\Http\Middleware\VerifyContentType;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Api\SessionsController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\LocationsController;
 use App\Http\Controllers\Api\OrdersController;
 use App\Http\Controllers\Api\OrdernotesController;
 
-$api = app('Dingo\Api\Routing\Router');
+$api = app(Dingo\Api\Routing\Router::class);
 
-$api->version('v1', ['middleware' => 'bindings'], function ($api) {
-    //dd("HERE routes");
-    $api->get('test', function(){
-        dd("HERE endpoint");
-    });
+$api->version('v1', ['middleware' => ['bindings']], function ($api) {
 
-    // STUB routes
-    $api->get('orders/{order}/relationships/location', ['as' => 'orders.relationships.location']);
-    $api->get('orders/{order}/location', ['as' => 'orders.location']);
-    $api->get('orders/{order}/relationships/user', ['as' => 'orders.relationships.user']);
-    $api->get('orders/{order}/user', ['as' => 'orders.user']);
-    $api->get('orders/{order}/relationships/notes', ['as' => 'orders.relationships.notes']);
-    $api->get('orders/{order}/notes', ['as' => 'orders.notes']);
-    // END STUB routes
+    // AUTH Routes
+    $api->post('auth/login', 'App\Http\Controllers\Api\AuthController@login');
+    $api->post('auth/signup', 'App\Http\Controllers\Api\AuthController@signup');
+    $api->post('auth/recovery', 'App\Http\Controllers\Api\AuthController@recovery');
+    $api->post('auth/reset', 'App\Http\Controllers\Api\AuthController@reset');
 
-    $api->resource(
-        'sessions',
-        SessionsController::class,
-        ['only' => ['store', 'show']]
-    );
+    $api->group(['middleware' => ['before' => 'jwt.auth', 'after' => 'jwt.refresh']], function ($api) {
+        // USERS routes
+        $api->resource(
+            'users',
+            UsersController::class
+        );
 
-    $api->resource(
-        'users',
-        UsersController::class
-    );
+        // LOCATIONS routes
+        $api->resource(
+            'locations',
+            LocationsController::class
+        );
 
-    $api->resource(
-        'locations',
-        LocationsController::class
-    );
-
-    $api->group(['middleware' => AuthJWT::class], function ($api) {
-
+        // ORDERS routes
         $api->patch('orders/{order}/deliver/', ['as' => 'orders.deliver', 'uses' => 'OrdersController@deliver']);
         $api->resource('orders', OrdersController::class,
             ['only' => ['index', 'show', 'store', 'update']]
         );
 
+        // NOTES routes
         $api->resource('notes', OrdernotesController::class,
             ['only' => ['store', 'show', 'update']]
         );
+
+        // STUB routes
+        $api->get('orders/{order}/relationships/location', ['as' => 'orders.relationships.location']);
+        $api->get('orders/{order}/location', ['as' => 'orders.location']);
+        $api->get('orders/{order}/relationships/user', ['as' => 'orders.relationships.user']);
+        $api->get('orders/{order}/user', ['as' => 'orders.user']);
+        $api->get('orders/{order}/relationships/notes', ['as' => 'orders.relationships.notes']);
+        $api->get('orders/{order}/notes', ['as' => 'orders.notes']);
 
     });
 });

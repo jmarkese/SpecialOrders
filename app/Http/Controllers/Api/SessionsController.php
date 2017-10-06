@@ -24,7 +24,7 @@ class SessionsController extends Controller
         $user = \App\User::create($request->all());
         $token = JWTAuth::fromUser($user);
 
-        return $this->apiReponse(new SessionResource($user), $token);
+        return $this->apiReponse(new SessionResource(null), $token);
     }
 
     /**
@@ -35,7 +35,6 @@ class SessionsController extends Controller
      */
     public function show(User $id=null)
     {
-        dd("HERE");
         // @TODO
     }
 }
