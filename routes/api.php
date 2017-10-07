@@ -15,7 +15,12 @@ $api->version('v1', ['middleware' => ['bindings']], function ($api) {
     $api->post('auth/recovery', 'App\Http\Controllers\Api\AuthController@recovery');
     $api->post('auth/reset', 'App\Http\Controllers\Api\AuthController@reset');
 
-    $api->group(['middleware' => ['before' => 'jwt.auth', 'after' => 'jwt.refresh']], function ($api) {
+    $middlware = [
+        'before' => 'jwt.auth',
+        //'after' => 'jwt.refresh',
+    ];
+
+    $api->group(['middleware' => $middlware], function ($api) {
         // USERS routes
         $api->resource(
             'users',
