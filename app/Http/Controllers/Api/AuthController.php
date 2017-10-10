@@ -21,7 +21,7 @@ class AuthController extends Controller
     use Helpers;
     use ApiReponse;
 
-    public function login(Request $request)
+    public function signin(Request $request)
     {
         $credentials = $request->only(['email', 'password']);
 
@@ -45,30 +45,13 @@ class AuthController extends Controller
         return $this->apiReponse(new UserResource(JWTAuth::toUser($token)), $token);
     }
 
-    public function signup(Request $request)
+    public function register(RegisterFormRequest $request)
     {
-        $signupFields = Config::get('boilerplate.signup_fields');
-        $hasToReleaseToken = Config::get('boilerplate.signup_token_release');
-
-        $userData = $request->only($signupFields);
-
-        $validator = Validator::make($userData, Config::get('boilerplate.signup_fields_rules'));
-
-        if($validator->fails()) {
-            throw new ValidationHttpException($validator->errors()->all());
-        }
-
-        User::unguard();
-        $user = User::create($userData);
-        User::reguard();
-
-        if(!$user->id) {
-            return $this->response->error('could_not_create_user', 500);
-        }
-
-        if($hasToReleaseToken) {
-            return $this->login($request);
-        }
+        User::create([
+            'name' => $request->json('name'),
+            'email' => $request->json('email'),
+            'password' => bcrypt($request->json('password')),
+        ]);
 
         return $this->response->created();
     }

@@ -14,7 +14,7 @@
             </div>
             <div class="form-group" v-bind:class="{ 'has-error': error && response.email }">
                 <label for="email">E-mail</label>
-                <input type="email" id="email" class="form-control" placeholder="gavin.belson@hooli.com" v-model="email" required>
+                <input type="email" id="email" class="form-control" v-model="email" required>
                 <span class="help-block" v-if="error && response.email">{{ response.email }}</span>
             </div>
             <div class="form-group" v-bind:class="{ 'has-error': error && response.password }">
@@ -26,3 +26,25 @@
         </form>
     </div>
 </template>
+<script>
+    import auth from '../auth.js';
+
+    export default {
+        data() {
+            return {
+                name: null,
+                email: null,
+                password: null,
+                success: false,
+                error: false,
+                response: null
+            }
+        },
+        methods: {
+            register(event) {
+                event.preventDefault()
+                auth.register(this, this.name, this.email, this.password)
+            }
+        }
+    }
+</script>

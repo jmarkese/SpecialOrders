@@ -10,10 +10,10 @@ $api = app(Dingo\Api\Routing\Router::class);
 $api->version('v1', ['middleware' => ['bindings']], function ($api) {
 
     // AUTH Routes
-    $api->post('auth/login', 'App\Http\Controllers\Api\AuthController@login');
-    $api->post('auth/signup', 'App\Http\Controllers\Api\AuthController@signup');
-    $api->post('auth/recovery', 'App\Http\Controllers\Api\AuthController@recovery');
-    $api->post('auth/reset', 'App\Http\Controllers\Api\AuthController@reset');
+    $api->post('signin', 'App\Http\Controllers\Api\AuthController@signin');
+    $api->post('register', 'App\Http\Controllers\Api\AuthController@register');
+    $api->post('recovery', 'App\Http\Controllers\Api\AuthController@recovery');
+    $api->post('reset', 'App\Http\Controllers\Api\AuthController@reset');
 
     $middlware = [
         'before' => 'jwt.auth',

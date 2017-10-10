@@ -6,8 +6,17 @@
                     <li>
                         <router-link :to="{ name: 'home' }">Home</router-link>
                     </li>
-                    <li class="pull-right">
+                    <li class="pull-right" v-if="!auth.user.authenticated">
                         <router-link :to="{ name: 'register' }">Register</router-link>
+                    </li>
+                    <li class="pull-right" v-if="!auth.user.authenticated">
+                        <router-link :to="{ name: 'signin' }">Sign in</router-link>
+                    </li>
+                    <li class="pull-right" v-if="auth.user.authenticated">
+                        <a href="javascript:void(0)" v-on:click="signout">Sign out</a>
+                    </li>
+                    <li class="pull-right" v-if="auth.user.authenticated">
+                        Hi, {{ auth.user.attributes.name }}
                     </li>
                 </ul>
             </nav>
@@ -17,3 +26,25 @@
         </div>
     </div>
 </template>
+
+<script>
+    import auth from '../auth.js'
+
+    export default {
+        data() {
+            return {
+                auth: auth
+            }
+        },
+        methods: {
+            signout() {
+                auth.signout()
+            }
+        },
+        mounted: function () {
+            this.$nextTick(function () {
+                auth.check()
+            })
+        }
+    }
+</script>

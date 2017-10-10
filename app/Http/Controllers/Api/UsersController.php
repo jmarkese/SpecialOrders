@@ -2,11 +2,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Traits\ApiReponse;
+use App\User;
 use Illuminate\Http\Request;
 
 
 class UsersController extends Controller
 {
+    use ApiReponse;
 
     /**
      * Display a listing of the resource.
@@ -45,9 +49,10 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        $resource = new UserResource($user);
+        return $this->apiReponse($resource);
     }
 
     /**
